@@ -20,7 +20,7 @@ temporarily increases enemy speed
 ![alt text](https://raw.githubusercontent.com/2push/GridRun/master/Assets/Sprites/Bonuses/bonus_enemyspeed.png) - temporarily slows down the enemy
 
 
-![alt text](https://raw.githubusercontent.com/2push/GridRun/master/Assets/Sprites/Bonuses/bonus_ghorstForm.png) - temporarily gives the player ghostform, letting not to get damage from enemies
+![alt text](https://raw.githubusercontent.com/2push/GridRun/master/Assets/Sprites/Bonuses/bonus_ghorstForm.png) - temporarily gives the player ghostform, letting not to get damage from the enemies
 
 
 ![alt text](https://raw.githubusercontent.com/2push/GridRun/master/Assets/Sprites/Bonuses/bonus_health.png) - increases player health by 1
