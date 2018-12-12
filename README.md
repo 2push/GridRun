@@ -5,7 +5,7 @@ ToDO:
 1)Level-objects pool  
 2)Clean the singleton a bit  
 3)Add PlayerStats and EnemyStats classes instead of changing properties of PlayerController and EnemyController
-
+4)Add some visuals,particles etc
 
 ![alt text](https://raw.githubusercontent.com/2push/GridRun/master/Assets/Sprites/Bonuses/antibonus_enemySpeed.png) - 
 temporarily increases enemy speed
