@@ -22,6 +22,11 @@ public class GridSpawner : MonoBehaviour {
 
     private void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
     }
 

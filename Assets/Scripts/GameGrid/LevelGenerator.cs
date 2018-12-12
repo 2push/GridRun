@@ -24,6 +24,7 @@ public class LevelGenerator : MonoBehaviour {
     ASGrid aStarGrid;
     Transform thisTransform;
     CameraController camController;
+    BonusManager bonusTestManager;
 
     private void Start()
     {
@@ -35,6 +36,7 @@ public class LevelGenerator : MonoBehaviour {
         aStarGrid = GameObject.FindGameObjectWithTag("AStar").GetComponent<ASGrid>();
         camController = Camera.main.GetComponent<CameraController>();
         gridSpawner = GetComponent<GridSpawner>();
+        bonusTestManager = FindObjectOfType<BonusManager>();
         gridSpawner.SetGridTransformr(transform);
         thisTransform = transform;
         camController.SetCamSize(gridSize.x, gridSize.y, cellDiameter);
@@ -57,6 +59,7 @@ public class LevelGenerator : MonoBehaviour {
         AStarGenerationData ASGenData = new AStarGenerationData(gridSize, cellDiameter, thisTransform.position, columns, rows);      
         GridBasics.GridGeneration(lvlGenData);
         aStarGrid.ProceedLevel(ASGenData);
+        bonusTestManager.Launch(gridSize, thisTransform.position, cellDiameter);
     }
 
     public int GetLevelsAmount

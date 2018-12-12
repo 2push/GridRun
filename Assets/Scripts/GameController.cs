@@ -15,15 +15,14 @@ public class GameController: MonoBehaviour
     UIController uiController;
     LevelGenerator levelGenerator;
     int currentLevel;
-    WaitForSeconds waitForProtectionToOff; 
     bool isProtected;
     int coinsCollected;
     int coinsOnLevel;
     int playerLifesLeft;
     bool isRoundWinner;
     float enemyInaccuracyReduce;
-    int enemiesAmount;
-
+    BonusManager bonusManager;
+    
     private void Awake()
     {
         #region Singltone
@@ -42,17 +41,17 @@ public class GameController: MonoBehaviour
 
     private void Init()
     {
-        waitForProtectionToOff = new WaitForSeconds(protectionDuration);
         playerLifesLeft = playerLifes;
         levelGenerator = GameObject.FindGameObjectWithTag("LevelGrid").GetComponent<LevelGenerator>();
         uiController = GetComponent<UIController>();
-        uiController.SetLifesAmount(playerLifesLeft);
+        uiController.LifesAmountUpdate(playerLifesLeft);
+        bonusManager = FindObjectOfType<BonusManager>();
     }
     
     private void RefreshPlayerLifes()
     {
         playerLifesLeft = playerLifes;
-        uiController.SetLifesAmount(playerLifesLeft);
+        uiController.LifesAmountUpdate(playerLifesLeft);
     }
 
     private void LevelSetter(bool isNext)
@@ -80,7 +79,6 @@ public class GameController: MonoBehaviour
 
     private void OnRoundWin()
     {
-        Debug.Log("Won the lvl!");
         uiController.RoundCompleted();
         if (!(currentLevel < levelGenerator.GetLevelsAmount))
         {
@@ -93,7 +91,7 @@ public class GameController: MonoBehaviour
     private void OnGameWin()
     {
         RestartGame();
-        uiController.ActivateWinnerScreen(LevelSetter);
+        uiController.ActivateWinnerScreen(LevelSetter); //contains restart callback
     }
 
     public void OnPlayerDamaged()
@@ -102,9 +100,8 @@ public class GameController: MonoBehaviour
             return;
         StartCoroutine(ProtectionActivator());
         uiController.PlayerDamaged();
-        Debug.Log("You have been damaged!");
         playerLifesLeft -= Values.enemyDamage;
-        uiController.SetLifesAmount(playerLifesLeft);
+        uiController.LifesAmountUpdate(playerLifesLeft);
         if (playerLifesLeft < 1)
         {
             PlayerDied();
@@ -117,6 +114,7 @@ public class GameController: MonoBehaviour
         LevelSetter(false);
     }
 
+    //refreshing game stats on lose/win e.g. collected coins
     private void RefreshStats()
     {
         RefreshPlayerLifes();
@@ -126,24 +124,27 @@ public class GameController: MonoBehaviour
         uiController.AcquiredCoinsUpdate(coinsCollected);       
     }
 
+    //used to get rid of all on-level objects in terms 
     private void ClearLevel()
-    {
+    {        
+        bonusManager.ClearBonuses(); //used to inform all spawned bonuses to get destroyed
         foreach (Transform child in levelGenerator.transform)
         {
             Destroy(child.gameObject);
         }
     }
 
+    //used to detect coin collection by event in Coin
     public void CollectCoin()
     {
         uiController.AcquiredCoinsUpdate(++coinsCollected);
-        Debug.Log("Coin collected!");
         if (coinsCollected == coinsOnLevel && coinsCollected > 0)
         {
             OnRoundWin();
         }
     }
 
+    //used to detect how many coins were spawned on level by GridSpawner
     public void NewCoinsAmount(int spawned = 1)
     {
         coinsOnLevel += spawned;
@@ -152,7 +153,20 @@ public class GameController: MonoBehaviour
     public IEnumerator ProtectionActivator()
     {
         isProtected = true;
-        yield return waitForProtectionToOff;
+        yield return new WaitForSeconds(protectionDuration);
         isProtected = false;
+    }
+
+    public IEnumerator GhostFormActivator(float duration)
+    {
+        isProtected = true;
+        yield return new WaitForSeconds(duration);
+        isProtected = false;
+    }
+
+    public void IncreasePlayerHealth()
+    {
+        playerLifesLeft += 1;
+        uiController.LifesAmountUpdate(playerLifesLeft);
     }
 }

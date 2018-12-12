@@ -29,6 +29,11 @@ public class UIController : MonoBehaviour {
 
     private void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         playerDamagedImage = damageTaken.GetComponent<Image>();
         roundWinImage = roundWin.GetComponent<Image>();
     }
@@ -92,7 +97,7 @@ public class UIController : MonoBehaviour {
         collectedCoinsText.text = collectedCoins.ToString();
     }
 
-    public void SetLifesAmount(int lifes)
+    public void LifesAmountUpdate(int lifes)
     {
         lifesAmountText.text = lifes.ToString();
     }

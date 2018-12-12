@@ -10,7 +10,7 @@ public class EnemyController : MonoBehaviour {
     [SerializeField]
     private LayerMask walkableMask;
     [SerializeField]
-    private float speed;
+    public float speed;
     [SerializeField, Range(0.1f,5f)]
     private float delayBeforeNewPath;
 
@@ -52,7 +52,14 @@ public class EnemyController : MonoBehaviour {
             }
             closeToPlayerNodes = Physics.OverlapSphere(playerTransform.position, chaseInaccuracyRate, walkableMask);
             int randomNode = UnityEngine.Random.Range(1, closeToPlayerNodes.Length-1);
+            try
+            { 
             pathRequest = new PathRequestData(thisTransform.position, closeToPlayerNodes[randomNode].transform.position, PathSubmitted);
+            }
+            catch
+            {
+                print("Path can't be found!");
+            }
             pathManager.RequestPath(pathRequest);      
             yield return waitForNewPath;
         }
