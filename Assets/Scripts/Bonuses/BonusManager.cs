@@ -19,7 +19,8 @@ public class BonusManager : MonoBehaviour {
     Dictionary<GameObject, BonusPrefabData> bonusesData;
 
     GameObject pickUpEffect;
-    Dictionary<GameObject, ParticleSystem> effectScript;
+    ParticleSystem particleSystem;
+
     private void Start()
     {
         Init();
@@ -30,7 +31,6 @@ public class BonusManager : MonoBehaviour {
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
-        effectScript = new Dictionary<GameObject, ParticleSystem>();
 
         for (int i = 0; i < poolSize; i++)
         {           
@@ -45,9 +45,8 @@ public class BonusManager : MonoBehaviour {
         }
         #region Pre-creating particles
         pickUpEffect = Instantiate(particles);
-        ParticleSystem particleSystem = pickUpEffect.GetComponent<ParticleSystem>();
+        particleSystem = pickUpEffect.GetComponent<ParticleSystem>();
         pickUpEffect.SetActive(false);
-        effectScript.Add(pickUpEffect, particleSystem);
         #endregion
     }
 
@@ -77,7 +76,7 @@ public class BonusManager : MonoBehaviour {
 
         pickUpEffect.SetActive(true);
         pickUpEffect.transform.position = bonus.transform.position;
-        effectScript[pickUpEffect].Play();
+        particleSystem.Play();
     }
 
     private IEnumerator BonusGeneration()
