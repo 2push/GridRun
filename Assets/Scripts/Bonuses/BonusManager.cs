@@ -18,6 +18,8 @@ public class BonusManager : MonoBehaviour {
     Queue<GameObject> bonusStorage; 
     Dictionary<GameObject, BonusPrefabData> bonusesData;
 
+    List<GameObject> bonusesOnLevel;
+
     GameObject pickUpEffect;
     ParticleSystem effectParticles;
 
@@ -31,6 +33,7 @@ public class BonusManager : MonoBehaviour {
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
+        bonusesOnLevel = new List<GameObject>();
         #region Pre-creating bonus pool
         for (int i = 0; i < poolSize; i++)
         {           
@@ -66,8 +69,8 @@ public class BonusManager : MonoBehaviour {
         foreach (Transform bonus in transform)
         {
             if (bonus.gameObject.activeSelf) //check if bonus is spawned
-            ReturnBonusToPool(bonus.gameObject, false);
-        }             
+                ReturnBonusToPool(bonus.gameObject, false);
+        }
     }
 
     public void ReturnBonusToPool(GameObject bonus, bool ifSpawnEffect)
@@ -76,10 +79,18 @@ public class BonusManager : MonoBehaviour {
         bonusStorage.Enqueue(bonus);
         if (!ifSpawnEffect)
             return;
-
         pickUpEffect.SetActive(true);
         pickUpEffect.transform.position = bonus.transform.position;
         effectParticles.Play();
+    }
+
+    private IEnumerator BonusOnLevelLifetime(GameObject bonusOnLevel)
+    {
+        yield return new WaitForSeconds(bonusLifeTime);
+        if (bonusOnLevel.activeSelf)
+        {
+            ReturnBonusToPool(bonusOnLevel, false);
+        }
     }
 
     private IEnumerator BonusGeneration()
@@ -96,10 +107,10 @@ public class BonusManager : MonoBehaviour {
                 int number = Random.Range(0, bonuses.Count);
                 GameObject bonus = bonusStorage.Dequeue();
                 bonus.SetActive(true);
-                
                 bonusesData[bonus].transform.position = bonusSpawnPosition;
                 bonusesData[bonus].script.SetUp(bonuses[number].bonusEffect);
                 bonusesData[bonus].spriteRenderer.sprite = bonuses[number].sprite;
+                StartCoroutine(BonusOnLevelLifetime(bonus));
             }           
         }
     }

@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemiesNumber: 2
   enemiesAddPerWave: 1
-  gridSize: {x: 12, y: 12}
+  gridSize: {x: 10, y: 10}
   cellDiameter: 1
   needRoadsPerColumn: 3
   wallSpawnChance: 0.51
@@ -729,9 +729,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bonusPrefab: {fileID: 292014366}
-  bonusSpawnInterval: 4
-  bonusLifeTime: 4
-  poolSize: 3
+  bonusSpawnInterval: 2
+  bonusLifeTime: 7
+  poolSize: 4
   YSpawnHigh: 0.74
   particles: {fileID: 1488317116524584, guid: 74e0f66914b26b849bdc250a5657dc9a, type: 2}
 --- !u!114 &812879138
@@ -1523,8 +1523,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8518d3152f0f2ed41a74be37e0b19c72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLifes: 14
+  playerLifes: 3
   protectionDuration: 2
+  chaseInnacuracy: 3.5
 --- !u!4 &1667118390
 Transform:
   m_ObjectHideFlags: 0
