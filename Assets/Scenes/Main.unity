@@ -241,7 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemiesNumber: 2
   enemiesAddPerWave: 1
-  gridSize: {x: 6, y: 6}
+  gridSize: {x: 12, y: 12}
   cellDiameter: 1
   needRoadsPerColumn: 3
   wallSpawnChance: 0.51
@@ -732,7 +732,7 @@ MonoBehaviour:
   bonusSpawnInterval: 4
   bonusLifeTime: 4
   poolSize: 3
-  YSpawnHigh: 1.2
+  YSpawnHigh: 0.74
   particles: {fileID: 1488317116524584, guid: 74e0f66914b26b849bdc250a5657dc9a, type: 2}
 --- !u!114 &812879138
 MonoBehaviour:

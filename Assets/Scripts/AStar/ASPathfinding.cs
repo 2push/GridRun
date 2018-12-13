@@ -99,7 +99,7 @@ public class ASPathfinding : MonoBehaviour {
             Gizmos.color = Color.black;
             foreach(ASNode node in pathNodes)
             {
-                Gizmos.DrawWireCube(node.worldPos, new Vector3(grid.GetNodeDiameter, grid.GetNodeDiameter, grid.GetNodeDiameter));
+                Gizmos.DrawWireCube(node.worldPos, new Vector3(grid.GetNodeDiameter, grid.GetNodeDiameter * 2, grid.GetNodeDiameter));
             }
         }
     }

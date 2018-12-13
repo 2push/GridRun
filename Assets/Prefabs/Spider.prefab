@@ -106,7 +106,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   speed: 1
-  delayBeforeNewPath: 0.61
+  delayBeforeNewPath: 1
 --- !u!136 &136590986444995100
 CapsuleCollider:
   m_ObjectHideFlags: 1

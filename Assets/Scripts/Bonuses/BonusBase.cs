@@ -12,8 +12,7 @@ public class BonusBase : MonoBehaviour {
     [SerializeField] private List<Sprite> sprites;    
     [Tooltip("Apply the effect")]
     [SerializeField] private List<UnityEvent> bonusEffects;
-
-    ASGrid asGrid;
+    
     List<BonusData> bonuses;
     PlayerController player;
     Vector3 playerLastStablePosition;
@@ -28,7 +27,6 @@ public class BonusBase : MonoBehaviour {
     private void Init()
     {
         bonuses = new List<BonusData>();
-        asGrid = FindObjectOfType<ASGrid>();
     }
 
     public List<BonusData> GetBonuses()
@@ -144,7 +142,7 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateLowSpeed()
     {
         yield return new WaitForSeconds(duration);
-        player.moveSpeed *= 2;
+            player.moveSpeed *= 2;
     }
 
     public void ActivateFat()
@@ -159,7 +157,8 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateFat(float normalRadius)
     {
         yield return new WaitForSeconds(duration);
-        playerCollider.radius = normalRadius;
+        if (playerCollider != null)
+            playerCollider.radius = normalRadius;
     }
 }
 

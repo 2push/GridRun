@@ -38,7 +38,6 @@ public class EnemyController : MonoBehaviour {
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         pathManager = GameObject.FindGameObjectWithTag("AStar").GetComponent<PathManager>();
         thisTransform = transform;
-        walkableMask = ~walkableMask;
         chaseInaccuracyRate = chaseInnacuracy;
     }
  
@@ -51,16 +50,24 @@ public class EnemyController : MonoBehaviour {
                 playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
             }
             closeToPlayerNodes = Physics.OverlapSphere(playerTransform.position, chaseInaccuracyRate, walkableMask);
+            print(chaseInaccuracyRate);
             int randomNode = UnityEngine.Random.Range(1, closeToPlayerNodes.Length-1);
             try
-            { 
-            pathRequest = new PathRequestData(thisTransform.position, closeToPlayerNodes[randomNode].transform.position, PathSubmitted);
+            {
+                pathRequest = new PathRequestData(thisTransform.position, closeToPlayerNodes[randomNode].transform.position, PathSubmitted);
             }
             catch
             {
-                print("Path can't be found!");
+                print("<color=blue>Path request data can't be set up!</color>");
             }
-            pathManager.RequestPath(pathRequest);      
+            try
+            {
+                pathManager.RequestPath(pathRequest);
+            }   
+            catch
+            {
+                print("<color=blue>Path request failed!</color>");
+            }
             yield return waitForNewPath;
         }
     }
@@ -109,6 +116,19 @@ public class EnemyController : MonoBehaviour {
     private void OnDisable()
     {
         OnDamageDone -= gameController.OnPlayerDamaged;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (closeToPlayerNodes == null)
+            return;
+            foreach(Collider n in closeToPlayerNodes)
+            {
+                if (n == null)
+                    return;
+                Gizmos.color = Color.blue;
+                Gizmos.DrawWireCube(n.transform.position, new Vector3(1,1,1));
+            }
     }
 
     public void SelfDestroy()

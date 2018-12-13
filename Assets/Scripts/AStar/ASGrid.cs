@@ -13,6 +13,12 @@ public class ASGrid : MonoBehaviour {
 
     public void ProceedLevel(AStarGenerationData generationData)
     {
+        StartCoroutine(PauseForLevelObjectsUpdate(generationData));
+    }
+    
+    private IEnumerator PauseForLevelObjectsUpdate(AStarGenerationData generationData)
+    {
+        yield return new WaitForEndOfFrame();
         Init(generationData);
         GenerateGrid();
     }

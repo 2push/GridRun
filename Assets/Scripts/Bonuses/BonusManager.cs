@@ -19,7 +19,7 @@ public class BonusManager : MonoBehaviour {
     Dictionary<GameObject, BonusPrefabData> bonusesData;
 
     GameObject pickUpEffect;
-    ParticleSystem particleSystem;
+    ParticleSystem effectParticles;
 
     private void Start()
     {
@@ -45,7 +45,7 @@ public class BonusManager : MonoBehaviour {
         }
         #region Pre-creating particles
         pickUpEffect = Instantiate(particles);
-        particleSystem = pickUpEffect.GetComponent<ParticleSystem>();
+        effectParticles = pickUpEffect.GetComponent<ParticleSystem>();
         pickUpEffect.SetActive(false);
         #endregion
     }
@@ -76,7 +76,7 @@ public class BonusManager : MonoBehaviour {
 
         pickUpEffect.SetActive(true);
         pickUpEffect.transform.position = bonus.transform.position;
-        particleSystem.Play();
+        effectParticles.Play();
     }
 
     private IEnumerator BonusGeneration()
