@@ -4,9 +4,7 @@ using System;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour {
-    [SerializeField,Range(3f, 10f)]
-    private float chaseInnacuracy;
-    private static float chaseInaccuracyRate;
+    
     [SerializeField]
     private LayerMask walkableMask;
     [SerializeField]
@@ -18,39 +16,42 @@ public class EnemyController : MonoBehaviour {
     WaitForSeconds waitForNewPath;
     Coroutine movement;
     Coroutine moveTo;   
-    GameController gameController;
     Transform playerTransform;
     Transform thisTransform;
     PathManager pathManager;
     PathRequestData pathRequest;  
     Collider[] closeToPlayerNodes;
+    Coroutine followPlayer;
+    float inaccuracy;
 
-    private void Start()
+    private void Awake()
     {
         Init();
-        StartCoroutine(FollowPlayer());
+        if (followPlayer != null)
+            StopCoroutine(followPlayer);
+        followPlayer = StartCoroutine(FollowPlayer());
     }
     
     private void Init()
     {
         waitForNewPath = new WaitForSeconds(delayBeforeNewPath);
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
         pathManager = GameObject.FindGameObjectWithTag("AStar").GetComponent<PathManager>();
         thisTransform = transform;
-        chaseInaccuracyRate = chaseInnacuracy;
+        inaccuracy = GameController.instance.GetInaccuracyValue;
     }
  
     private IEnumerator FollowPlayer()
     {
         while (true)
         {
+            yield return waitForNewPath;
             if (playerTransform == null)
             {
                 playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
             }
-            closeToPlayerNodes = Physics.OverlapSphere(playerTransform.position, chaseInaccuracyRate, walkableMask);
-            print(chaseInaccuracyRate);
+            closeToPlayerNodes = Physics.OverlapSphere(playerTransform.position, inaccuracy, walkableMask);
+            print(inaccuracy);
             int randomNode = UnityEngine.Random.Range(1, closeToPlayerNodes.Length-1);
             try
             {
@@ -68,7 +69,6 @@ public class EnemyController : MonoBehaviour {
             {
                 print("<color=blue>Path request failed!</color>");
             }
-            yield return waitForNewPath;
         }
     }
 
@@ -77,11 +77,6 @@ public class EnemyController : MonoBehaviour {
         if(movement != null)
             StopCoroutine(movement);
         movement = StartCoroutine(Movement(waypoints));
-    }
-
-    public static void ChangeInaccuracy(float changeValue)
-    {
-        chaseInaccuracyRate -= changeValue;
     }
 
     private IEnumerator Movement(List<Vector3> worldPoints)
@@ -115,7 +110,7 @@ public class EnemyController : MonoBehaviour {
 
     private void OnDisable()
     {
-        OnDamageDone -= gameController.OnPlayerDamaged;
+        OnDamageDone -= GameController.instance.OnPlayerDamaged;
     }
 
     private void OnDrawGizmos()

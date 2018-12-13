@@ -52,7 +52,7 @@ public class LevelGenerator : MonoBehaviour {
     }
 
     public void GenerateLevel(int level)
-    {   
+    {
         int rows = Mathf.RoundToInt(gridSize.y / cellDiameter) + 1;
         int columns = Mathf.RoundToInt(gridSize.x / cellDiameter) + 1;
         lvlGenData = new LevelGenerationData(gridSize, cellDiameter, levelsList[level], rows, columns);

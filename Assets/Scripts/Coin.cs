@@ -6,17 +6,6 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public event Action OnCoinCollected;
-    private GameController gameController;
-
-    private void Start()
-    {
-        Init();
-    }
-
-    private void Init()
-    {
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-    }
 
     private void OnTriggerEnter(Collider collision)
     {
@@ -34,7 +23,7 @@ public class Coin : MonoBehaviour
     {
         if (OnCoinCollected != null)
         {
-            OnCoinCollected -= gameController.CollectCoin;
+            OnCoinCollected -= GameController.instance.CollectCoin;
         }
     }
 }

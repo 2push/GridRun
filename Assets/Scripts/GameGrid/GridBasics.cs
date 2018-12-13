@@ -7,7 +7,6 @@ public class GridBasics : MonoBehaviour
 {
     public static void GridGeneration(LevelGenerationData lvlData)
     {
- 
         Vector3[,] cells = new Vector3[lvlData.rows, lvlData.columns];       
         Vector3 gridLeftBottomInWorld = -Vector3.right * lvlData.gridSize.x / 2 - Vector3.forward * lvlData.gridSize.y / 2;
 

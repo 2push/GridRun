@@ -59,4 +59,8 @@ public static class Values {
     /// Offset of player spawn at Y-axis
     /// </summary>
     public static float playerOffset = 0.2f;
+    /// <summary>
+    /// Determines how much is the enemies inaccuracy reduced after each level
+    /// </summary>
+    public static float ChaseInaccuracyReduction = 1; 
 }

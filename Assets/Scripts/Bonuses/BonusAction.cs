@@ -37,7 +37,7 @@ public class BonusAction : MonoBehaviour {
         if (other.tag == "Player")
         {
             StartEffect();
-            bonusTestManager.ReturnBonusToPool(gameObject);
+            bonusTestManager.ReturnBonusToPool(gameObject, true);
         }
     }
 }

@@ -31,7 +31,7 @@ public class BonusManager : MonoBehaviour {
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
-
+        #region Pre-creating bonus pool
         for (int i = 0; i < poolSize; i++)
         {           
             GameObject prefab = Instantiate(bonusPrefab, Vector3.zero, Quaternion.AngleAxis(90, Vector3.right));
@@ -43,6 +43,7 @@ public class BonusManager : MonoBehaviour {
             prefab.SetActive(false);
             bonusStorage.Enqueue(prefab);
         }
+        #endregion
         #region Pre-creating particles
         pickUpEffect = Instantiate(particles);
         effectParticles = pickUpEffect.GetComponent<ParticleSystem>();
@@ -65,14 +66,16 @@ public class BonusManager : MonoBehaviour {
         foreach (Transform bonus in transform)
         {
             if (bonus.gameObject.activeSelf) //check if bonus is spawned
-            ReturnBonusToPool(bonus.gameObject);
+            ReturnBonusToPool(bonus.gameObject, false);
         }             
     }
 
-    public void ReturnBonusToPool(GameObject bonus)
+    public void ReturnBonusToPool(GameObject bonus, bool ifSpawnEffect)
     {
         bonus.SetActive(false);
         bonusStorage.Enqueue(bonus);
+        if (!ifSpawnEffect)
+            return;
 
         pickUpEffect.SetActive(true);
         pickUpEffect.transform.position = bonus.transform.position;

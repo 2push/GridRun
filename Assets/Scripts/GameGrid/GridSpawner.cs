@@ -18,17 +18,6 @@ public class GridSpawner : MonoBehaviour {
     private float delayBeforeNewEnemy;
 
     Transform gridTransform;
-    GameController gameController;
-
-    private void Start()
-    {
-        Init();
-    }
-
-    private void Init()
-    {
-        gameController = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
-    }
 
     public void SetGridTransformr(Transform _gridTransform)
     {
@@ -51,8 +40,8 @@ public class GridSpawner : MonoBehaviour {
     {
         GameObject coin = Instantiate(coinPrefab, spawnPosition + Vector3.up * Values.coinOffset, Quaternion.identity);
         coin.transform.parent = gridTransform;
-        coin.GetComponent<Coin>().OnCoinCollected += gameController.CollectCoin;
-        gameController.NewCoinsAmount();
+        coin.GetComponent<Coin>().OnCoinCollected += GameController.instance.CollectCoin;
+        GameController.instance.NewCoinsAmount();
     }
 
     public void SpawnPlayer(Vector3 spawnPosition)
@@ -72,7 +61,7 @@ public class GridSpawner : MonoBehaviour {
         {
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition + Vector3.up * Values.enemyOffset, Quaternion.identity);
             enemy.transform.parent = gridTransform;
-            enemy.GetComponent<EnemyController>().OnDamageDone += gameController.OnPlayerDamaged;
+            enemy.GetComponent<EnemyController>().OnDamageDone += GameController.instance.OnPlayerDamaged;
             yield return new WaitForSeconds(delayBeforeNewEnemy);
         }
     }

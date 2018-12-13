@@ -9,6 +9,8 @@ public class GameController: MonoBehaviour
     private int playerLifes;
     [SerializeField]
     private float protectionDuration;
+    [SerializeField, Range(3.5f, 10f)]
+    private float chaseInnacuracy;
 
     public static GameController instance;
 
@@ -20,7 +22,8 @@ public class GameController: MonoBehaviour
     int coinsOnLevel;
     int playerLifesLeft;
     bool isRoundWinner;
-    float enemyInaccuracyReduce;
+    float currentChaseInaccuracy;
+
     BonusManager bonusManager;
     
     private void Awake()
@@ -46,8 +49,14 @@ public class GameController: MonoBehaviour
         uiController = GetComponent<UIController>();
         uiController.LifesAmountUpdate(playerLifesLeft);
         bonusManager = FindObjectOfType<BonusManager>();
+        currentChaseInaccuracy = chaseInnacuracy;
     }
-    
+
+    public float GetInaccuracyValue
+    {
+        get { return currentChaseInaccuracy; }
+    }
+
     private void RefreshPlayerLifes()
     {
         playerLifesLeft = playerLifes;
@@ -58,22 +67,22 @@ public class GameController: MonoBehaviour
     {
             if (isNext)
             {
-                EnemyController.ChangeInaccuracy(++enemyInaccuracyReduce);
                 ClearLevel();
                 levelGenerator.GenerateLevel(++currentLevel);
                 uiController.UpdateLevelText(currentLevel);
-                RefreshPlayerLifes(); 
-                return;
+                RefreshPlayerLifes();
+            return;
             }
             ClearLevel();
             levelGenerator.GenerateLevel(currentLevel);       
-    }
+    }   
 
     private void RestartGame()
     {
         ClearLevel();
         RefreshStats();
         currentLevel = Values.firstLevel;
+        currentChaseInaccuracy = chaseInnacuracy; 
         uiController.UpdateLevelText(currentLevel);     
     }
 
@@ -85,6 +94,7 @@ public class GameController: MonoBehaviour
             OnGameWin();
             return; 
         }
+        currentChaseInaccuracy -= Values.ChaseInaccuracyReduction;
         LevelSetter(true);
     }
 
@@ -120,7 +130,6 @@ public class GameController: MonoBehaviour
         RefreshPlayerLifes();
         coinsOnLevel = 0;
         coinsCollected = 0;
-        enemyInaccuracyReduce = 0;
         uiController.AcquiredCoinsUpdate(coinsCollected);       
     }
 

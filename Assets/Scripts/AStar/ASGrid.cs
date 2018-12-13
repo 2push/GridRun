@@ -25,7 +25,6 @@ public class ASGrid : MonoBehaviour {
 
     private void Init(AStarGenerationData genData)
     {
-        grid = null;
         gridWorldSize = genData.gridWorldSize;
         nodeD = genData.nodeDiameter;
         gridCenterPosition = genData.gridCenterPosition;
