@@ -16,9 +16,7 @@ public class BonusManager : MonoBehaviour {
     List<BonusData> bonuses; //all kinds of bonuses
 
     Queue<GameObject> bonusStorage; 
-    Dictionary<GameObject, BonusPrefabData> bonusesData;
-
-    List<GameObject> bonusesOnLevel;
+    Dictionary<GameObject, BonusPrefabData> bonusesData;  
 
     GameObject pickUpEffect;
     ParticleSystem effectParticles;
@@ -33,7 +31,6 @@ public class BonusManager : MonoBehaviour {
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
-        bonusesOnLevel = new List<GameObject>();
         #region Pre-creating bonus pool
         for (int i = 0; i < poolSize; i++)
         {           
