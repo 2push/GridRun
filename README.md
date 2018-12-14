@@ -2,7 +2,7 @@
 Simple grid-based maze runner
 
 ToDO:  
-1)Move some level-objects to pool to use cached data constantly without need to re-set it 
+1)Move some level-objects to pool to use cached data constantly without need to re-set it   
 2)Clean the singleton a bit  
 3)Add PlayerStats and EnemyStats classes instead of changing properties of PlayerController and EnemyController  
 4)Add some visuals, particles etc
