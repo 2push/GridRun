@@ -681,7 +681,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d55a48ad3c9543e4180b3e3904c77ad2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bonusPrefab: {fileID: 0}
+  bonusPrefab: {fileID: 1870924028455784, guid: ce37a2e361514cb44a66b8aee73cdfe8,
+    type: 2}
   bonusSpawnInterval: 2
   bonusLifeTime: 7
   poolSize: 4
