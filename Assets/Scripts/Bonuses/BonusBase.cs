@@ -58,7 +58,6 @@ public class BonusBase : MonoBehaviour {
 
     public void ActivateGhostForm()
     {
-        print("ActivateGhostForm");
         StartCoroutine(GameController.instance.GhostFormActivator(duration));
     }
 
