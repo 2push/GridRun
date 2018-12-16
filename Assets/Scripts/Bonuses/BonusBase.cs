@@ -44,10 +44,8 @@ public class BonusBase : MonoBehaviour {
 
     public void ActivateHighSpeed()
     {
-        print("ActivateHighSpeed1");
         if (player==null)
             player = FindObjectOfType<PlayerController>();
-        print("ActivateHighSpeed2");
         player.moveSpeed *= 2;
         StartCoroutine(DeactivateHighSpeed());
     }
@@ -55,7 +53,6 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateHighSpeed()
     {
         yield return new WaitForSeconds(duration);
-        print("DeactivateHighSpeed");
         player.moveSpeed /= 2;
     }
 
@@ -67,13 +64,11 @@ public class BonusBase : MonoBehaviour {
 
     public void ActivateHeal()
     {
-        print("ActivateHeal");
         GameController.instance.IncreasePlayerHealth();
     }
 
     public void ActivateKillSpider()
     {
-        print("ActivateKillSpider");
         try
         {
             GameObject enemyToDie = FindObjectOfType<EnemyController>().gameObject;
@@ -87,7 +82,6 @@ public class BonusBase : MonoBehaviour {
 
     public void ActivateEnemySlow()
     {
-        print("ActivateEnemySlow");
         try
         {
             enemies = FindObjectsOfType<EnemyController>(); 
@@ -106,7 +100,6 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateEnemySlow()
     {
         yield return new WaitForSeconds(duration);
-        print("DeactivateEnemySlow");
         foreach (EnemyController enemy in enemies)
         {
             enemy.speed *= 2;
@@ -115,7 +108,6 @@ public class BonusBase : MonoBehaviour {
 
     public void ActivateEnemyFast()
     {
-        print("ActivateEnemyFast");
         try
         {
             enemies = FindObjectsOfType<EnemyController>();
@@ -134,7 +126,6 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateEnemyFast()
     {
         yield return new WaitForSeconds(duration);
-        print("DeactivateEnemyFast");
         foreach (EnemyController enemy in enemies)
         {
             enemy.speed /= 2;
@@ -143,10 +134,8 @@ public class BonusBase : MonoBehaviour {
 
     public void ActivateLowSpeed()
     {
-        print("ActivateLowSpeed1");
         if (player == null)
             player = FindObjectOfType<PlayerController>();
-        print("ActivateLowSpeed2");
         player.moveSpeed /= 2;
         StartCoroutine(DeactivateLowSpeed());
     }
@@ -154,16 +143,13 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateLowSpeed()
     {
         yield return new WaitForSeconds(duration);
-        print("DeactivateLowSpeed");
         player.moveSpeed *= 2;
     }
 
     public void ActivateFat()
     {
-        print("ActivateFat1");
         if (playerCollider == null)
             playerCollider = FindObjectOfType<PlayerController>().GetComponent<CapsuleCollider>();
-        print("ActivateFat2");
         float normalRadius = playerCollider.radius;
         playerCollider.radius = 0.55f;
         StartCoroutine(DeactivateFat(normalRadius));
@@ -172,7 +158,6 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateFat(float normalRadius)
     {
         yield return new WaitForSeconds(duration);
-        print("DeactivateFat");
         if (playerCollider != null)
             playerCollider.radius = normalRadius;
     }
