@@ -51,7 +51,6 @@ public class EnemyController : MonoBehaviour {
                 playerTransform = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
             }
             closeToPlayerNodes = Physics.OverlapSphere(playerTransform.position, inaccuracy, walkableMask);
-            print(inaccuracy);
             int randomNode = UnityEngine.Random.Range(1, closeToPlayerNodes.Length-1);
             try
             {

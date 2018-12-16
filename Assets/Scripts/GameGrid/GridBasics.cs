@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 
+
+
 public class GridBasics : MonoBehaviour
 {
     public static void GridGeneration(LevelGenerationData lvlData)
@@ -18,7 +20,7 @@ public class GridBasics : MonoBehaviour
                     + Vector3.forward * (y * lvlData.cellDiameter + lvlData.cellDiameter / 2);
                 cells[x, y] = worldPoint;
             }
-        }       
+        }        
         lvlData.callBack(cells);
     }
 }

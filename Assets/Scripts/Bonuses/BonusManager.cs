@@ -16,7 +16,8 @@ public class BonusManager : MonoBehaviour {
     List<BonusData> bonuses; //all kinds of bonuses
 
     Queue<GameObject> bonusStorage; 
-    Dictionary<GameObject, BonusPrefabData> bonusesData;  
+    Dictionary<GameObject, BonusPrefabData> bonusesData; 
+    Dictionary<GameObject, IEnumerator> bonusesLifetime;
 
     GameObject pickUpEffect;
     ParticleSystem effectParticles;
@@ -31,6 +32,7 @@ public class BonusManager : MonoBehaviour {
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
+        bonusesLifetime = new Dictionary<GameObject, IEnumerator>();
         #region Pre-creating bonus pool
         for (int i = 0; i < poolSize; i++)
         {           
@@ -40,6 +42,7 @@ public class BonusManager : MonoBehaviour {
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
             BonusPrefabData prefabData = new BonusPrefabData(script, prefab.transform, renderer);
             bonusesData.Add(prefab, prefabData);
+            bonusesLifetime.Add(prefab, BonusOnLevelLifetime(prefab));
             prefab.SetActive(false);
             bonusStorage.Enqueue(prefab);
         }
@@ -107,7 +110,9 @@ public class BonusManager : MonoBehaviour {
                 bonusesData[bonus].transform.position = bonusSpawnPosition;
                 bonusesData[bonus].script.SetUp(bonuses[number].bonusEffect);
                 bonusesData[bonus].spriteRenderer.sprite = bonuses[number].sprite;
-                StartCoroutine(BonusOnLevelLifetime(bonus));
+                if (bonusesLifetime[bonus] != null) //not sure if it can be null, but anyways gonna check
+                    StopCoroutine(bonusesLifetime[bonus]);
+                StartCoroutine(bonusesLifetime[bonus]);
             }           
         }
     }

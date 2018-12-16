@@ -685,7 +685,7 @@ MonoBehaviour:
     type: 2}
   bonusSpawnInterval: 2
   bonusLifeTime: 7
-  poolSize: 4
+  poolSize: 2
   YSpawnHigh: 0.74
   particles: {fileID: 1488317116524584, guid: 74e0f66914b26b849bdc250a5657dc9a, type: 2}
 --- !u!114 &812879138

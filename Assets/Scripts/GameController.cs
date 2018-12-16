@@ -16,6 +16,7 @@ public class GameController: MonoBehaviour
 
     UIController uiController;
     LevelGenerator levelGenerator;
+    BonusManager bonusManager;
     int currentLevel;
     bool isProtected;
     int coinsCollected;
@@ -23,8 +24,7 @@ public class GameController: MonoBehaviour
     int playerLifesLeft;
     bool isRoundWinner;
     float currentChaseInaccuracy;
-
-    BonusManager bonusManager;
+    Queue<GameObject> enemiesStorage;
     
     private void Awake()
     {

@@ -6,7 +6,7 @@ using UnityEngine;
 public class PathManager : MonoBehaviour {
 
     private ASPathfinding pathfinding;
-    private static PathManager instance = null;
+
     private void Awake()
     {     
         Init();
@@ -14,12 +14,6 @@ public class PathManager : MonoBehaviour {
 
     private void Init()
     {
-        #region Singleton
-        if (instance == null)
-            instance = this;
-        else if (instance != this)
-            Destroy(gameObject);
-        #endregion
         pathfinding = GetComponent<ASPathfinding>();
     }
 
