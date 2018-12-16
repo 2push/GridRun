@@ -9,15 +9,15 @@ public class GridBasics : MonoBehaviour
 {
     public static void GridGeneration(LevelGenerationData lvlData)
     {
-        Vector3[,] cells = new Vector3[lvlData.rows, lvlData.columns];       
-        Vector3 gridLeftBottomInWorld = -Vector3.right * lvlData.gridSize.x / 2 - Vector3.forward * lvlData.gridSize.y / 2;
+        Vector3[,] cells = new Vector3[lvlData.rows, lvlData.columns];
+        Vector3 gridLeftBottomInWorld = -Vector3.right * lvlData.gridSize.x * 0.5f - Vector3.forward * lvlData.gridSize.y * 0.5f;
 
         for (int x = 0; x < lvlData.columns; x++)
         {
             for (int y = 0; y < lvlData.rows; y++)
             {
-                Vector3 worldPoint = gridLeftBottomInWorld + Vector3.right * (x * lvlData.cellDiameter + lvlData.cellDiameter / 2)
-                    + Vector3.forward * (y * lvlData.cellDiameter + lvlData.cellDiameter / 2);
+                Vector3 worldPoint = gridLeftBottomInWorld + Vector3.right * (x * lvlData.cellDiameter + lvlData.cellDiameter * 0.5f)
+                    + Vector3.forward * (y * lvlData.cellDiameter + lvlData.cellDiameter * 0.5f);
                 cells[x, y] = worldPoint;
             }
         }        

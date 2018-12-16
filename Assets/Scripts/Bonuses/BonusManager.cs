@@ -100,9 +100,9 @@ public class BonusManager : MonoBehaviour {
             yield return new WaitForSeconds(bonusSpawnInterval);
             if (bonusStorage.Count > 0)
             {
-                float x = Random.Range(spawnAreaPos.x - spawnArea.x / 2, spawnAreaPos.x + spawnArea.x / 2);
+                float x = Random.Range(spawnAreaPos.x - spawnArea.x * 0.5f, spawnAreaPos.x + spawnArea.x * 0.5f);
                 float y = spawnAreaPos.y + YSpawnHigh;
-                float z = Random.Range(spawnAreaPos.y - spawnArea.y / 2, spawnAreaPos.y + spawnArea.y / 2);
+                float z = Random.Range(spawnAreaPos.y - spawnArea.y * 0.5f, spawnAreaPos.y + spawnArea.y * 0.5f);
                 Vector3 bonusSpawnPosition = new Vector3(x, y, z);
                 int number = Random.Range(0, bonuses.Count);
                 GameObject bonus = bonusStorage.Dequeue();

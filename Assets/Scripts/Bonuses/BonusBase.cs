@@ -53,7 +53,7 @@ public class BonusBase : MonoBehaviour {
     private IEnumerator DeactivateHighSpeed()
     {
         yield return new WaitForSeconds(duration);
-        player.moveSpeed /= 2;
+        player.moveSpeed *= 0.5f;
     }
 
     public void ActivateGhostForm()
@@ -86,7 +86,7 @@ public class BonusBase : MonoBehaviour {
             enemies = FindObjectsOfType<EnemyController>(); 
             foreach(EnemyController enemy in enemies)
             {
-                enemy.speed /= 2;
+                enemy.speed *= 0.5f;
             }
             StartCoroutine(DeactivateEnemySlow());
         }
@@ -127,7 +127,7 @@ public class BonusBase : MonoBehaviour {
         yield return new WaitForSeconds(duration);
         foreach (EnemyController enemy in enemies)
         {
-            enemy.speed /= 2;
+            enemy.speed *= 0.5f;
         }
     }
 
@@ -135,7 +135,7 @@ public class BonusBase : MonoBehaviour {
     {
         if (player == null)
             player = FindObjectOfType<PlayerController>();
-        player.moveSpeed /= 2;
+        player.moveSpeed *= 0.5f;
         StartCoroutine(DeactivateLowSpeed());
     }
 

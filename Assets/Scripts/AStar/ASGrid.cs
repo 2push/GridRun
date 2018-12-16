@@ -90,14 +90,14 @@ public class ASGrid : MonoBehaviour {
 
     public void GenerateGrid()
     {
-        Vector3 gridLeftBottomInWorld = gridCenterPosition - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+        Vector3 gridLeftBottomInWorld = gridCenterPosition - Vector3.right * gridWorldSize.x * 0.5f - Vector3.forward * gridWorldSize.y * 0.5f;
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = gridLeftBottomInWorld + Vector3.right * (x * nodeD + nodeD/2) +
-                    Vector3.forward * (y * nodeD + nodeD/2);
-                bool obstacleCollision = !(Physics.CheckSphere(worldPoint, nodeD/2, unwalkableMask));
+                Vector3 worldPoint = gridLeftBottomInWorld + Vector3.right * (x * nodeD + nodeD * 0.5f) +
+                    Vector3.forward * (y * nodeD + nodeD * 0.5f);
+                bool obstacleCollision = !(Physics.CheckSphere(worldPoint, nodeD * 0.5f, unwalkableMask));
                 grid[x, y] = new ASNode(x,y, worldPoint, obstacleCollision);
             }
         }
