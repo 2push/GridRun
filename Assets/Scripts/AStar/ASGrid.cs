@@ -10,7 +10,8 @@ public class ASGrid : MonoBehaviour {
     Vector3 gridCenterPosition;
     int gridSizeX;
     int gridSizeY;
-
+    // Indent between nodes in A Star grid for drawing gizmos only
+    float indentBetweenNodes = 0.2f;
     public void ProceedLevel(AStarGenerationData generationData)
     {
         StartCoroutine(PauseForLevelObjectsUpdate(generationData));
@@ -46,7 +47,7 @@ public class ASGrid : MonoBehaviour {
                 foreach (ASNode node in grid)
                 {
                     Gizmos.color = node.walkable ? Color.grey : Color.red;
-                    Gizmos.DrawCube(node.worldPos, Vector3.one * (nodeD - Values.IndentBetweenNodes));
+                    Gizmos.DrawCube(node.worldPos, Vector3.one * (nodeD - indentBetweenNodes));
                 }                   
         }
     }

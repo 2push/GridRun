@@ -8,7 +8,9 @@ public class ASPathfinding : MonoBehaviour {
     private ASGrid grid;
     private List<ASNode> pathNodes;
     private List<Vector3> path;
-
+    
+    private readonly int manhattanKD = 14;
+    private readonly int manhattanKN = 10;
     private void Start()
     {
         grid = GetComponent<ASGrid>();
@@ -74,8 +76,8 @@ public class ASPathfinding : MonoBehaviour {
         int dstY = Mathf.Abs(nodeA.y - nodeB.y);
 
         if (dstX > dstY)
-            return Values.manhattanKD * dstY + Values.manhattanKD * (dstX - dstY);
-        return Values.manhattanKD * dstX + Values.manhattanKN * (dstY - dstX);
+            return manhattanKD * dstY + manhattanKD * (dstX - dstY);
+        return manhattanKD * dstX + manhattanKN * (dstY - dstX);
     }
 
     void RetracePath(ASNode startNode, ASNode endNode)

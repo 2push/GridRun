@@ -18,6 +18,18 @@ public class LevelGenerator : MonoBehaviour {
     private int needRoadsPerColumn;
     [SerializeField, Range(0f, 1f)]
     private float wallSpawnChance;
+    // Player setup position
+    [SerializeField] private Vector2 playerSpawnPosition;
+    // Enemy setup position indent from other corner in case of uneven number of nodes
+    private int enemyPosIndent = 3;
+    // Enemy setup position indent from other corner in case of even number of nodes
+    private int enemyPosIndentEven = 2;
+    // Number of X dimension in two-dimension array
+    private int xDimension = 0;
+    // Number of Y dimension in two-dimension array
+    private int yDimension = 1;
+    // Amount of outer walls at the grid
+    private int outerWalls = 2;
     GridSpawner gridSpawner;
     Dictionary<int, Action<Vector3[,]>> levelsList;
     LevelGenerationData lvlGenData;
@@ -28,7 +40,7 @@ public class LevelGenerator : MonoBehaviour {
 
     private void Start()
     {
-        Init();        
+        Init();    
     }
     
     private void Init()
@@ -69,9 +81,9 @@ public class LevelGenerator : MonoBehaviour {
 
     private void SetCells1(Vector3[,] cellData)
     {
-        for (int x = 0; x < cellData.GetLength(Values.xDimension); x++)
+        for (int x = 0; x < cellData.GetLength(xDimension); x++)
         {
-            for (int y = 0; y < cellData.GetLength(Values.yDimension); y++)
+            for (int y = 0; y < cellData.GetLength(yDimension); y++)
             {
                 #region Side walls spawn
                 if (x == 0 || y == 0 ||
@@ -83,9 +95,9 @@ public class LevelGenerator : MonoBehaviour {
                 #endregion
                 gridSpawner.SpawnRoad(cellData[x,y]); //road spawn
                 #region Enemies spawn
-                int enemyXPos = cellData.GetLength(Values.xDimension) % 2 == 0 ? Values.enemyPosUnE : Values.enemyPosEven;
-                int enemyYPos = cellData.GetLength(Values.yDimension) % 2 == 0 ? Values.enemyPosUnE : Values.enemyPosEven;
-                if (x == cellData.GetLength(Values.xDimension) - enemyXPos && y == cellData.GetLength(Values.yDimension) - enemyYPos)
+                int enemyXPos = cellData.GetLength(xDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
+                int enemyYPos = cellData.GetLength(yDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
+                if (x == cellData.GetLength(xDimension) - enemyXPos && y == cellData.GetLength(yDimension) - enemyYPos)
                 {
                     gridSpawner.SpawnEnemies(cellData[x, y], enemiesNumber); //enemies spawn
                 }
@@ -97,7 +109,7 @@ public class LevelGenerator : MonoBehaviour {
                 }
                 #endregion
                 #region Player spawn
-                if (x == Values.playerPos.x && y == Values.playerPos.y)
+                if (x == playerSpawnPosition.x && y == playerSpawnPosition.y)
                 {
                     gridSpawner.SpawnPlayer(cellData[x, y]); //player spawn
                 }
@@ -109,9 +121,9 @@ public class LevelGenerator : MonoBehaviour {
     private void SetCells2(Vector3[,] cellData)
     {
         int tempEnemiesNumber = enemiesNumber + enemiesAddPerWave;
-        for (int x = 0; x < cellData.GetLength(Values.xDimension); x++)
+        for (int x = 0; x < cellData.GetLength(xDimension); x++)
         {
-            for (int y = 0; y < cellData.GetLength(Values.yDimension); y++)
+            for (int y = 0; y < cellData.GetLength(yDimension); y++)
             {
 
                 #region Walls spawn
@@ -125,9 +137,9 @@ public class LevelGenerator : MonoBehaviour {
                 #endregion
                 gridSpawner.SpawnRoad(cellData[x, y]); //road spawn
                 #region Enemies spawn
-                int enemyXPos = cellData.GetLength(Values.xDimension) % 2 == 0 ? Values.enemyPosUnE : Values.enemyPosEven;
-                int enemyYPos = cellData.GetLength(Values.yDimension) % 2 == 0 ? Values.enemyPosUnE : Values.enemyPosEven;
-                if (x == cellData.GetLength(Values.xDimension) - enemyXPos && y == cellData.GetLength(Values.yDimension) - enemyYPos)
+                int enemyXPos = cellData.GetLength(xDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
+                int enemyYPos = cellData.GetLength(yDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
+                if (x == cellData.GetLength(xDimension) - enemyXPos && y == cellData.GetLength(yDimension) - enemyYPos)
                 {
                     gridSpawner.SpawnEnemies(cellData[x, y], tempEnemiesNumber); //enemies spawn
                 }
@@ -139,7 +151,7 @@ public class LevelGenerator : MonoBehaviour {
                 }
                 #endregion
                 #region Player spawn
-                if (x == Values.playerPos.x && y == Values.playerPos.y)
+                if (x == playerSpawnPosition.x && y == playerSpawnPosition.y)
                 {
                     gridSpawner.SpawnPlayer(cellData[x, y]); //player spawn
                 } 
@@ -152,10 +164,10 @@ public class LevelGenerator : MonoBehaviour {
     {
 
         int tempEnemiesNumber = enemiesNumber + enemiesAddPerWave * 2;
-        for (int x = 0; x < cellData.GetLength(Values.xDimension); x++)
+        for (int x = 0; x < cellData.GetLength(xDimension); x++)
         {
             int wallsPerColumn = 0;
-            for (int y = 0; y < cellData.GetLength(Values.yDimension); y++)
+            for (int y = 0; y < cellData.GetLength(yDimension); y++)
             {
                 
                 float rndWallSpawn = UnityEngine.Random.Range(0f, 1f);
@@ -171,7 +183,7 @@ public class LevelGenerator : MonoBehaviour {
                 if (x % 2 == 0)
                 {
                     if (rndWallSpawn >= 1f - wallSpawnChance && !(
-                    wallsPerColumn >= cellData.GetLength(Values.xDimension) - Values.outerWalls - needRoadsPerColumn))
+                    wallsPerColumn >= cellData.GetLength(xDimension) - outerWalls - needRoadsPerColumn))
                     {
                         gridSpawner.SpawnWall(cellData[x, y]); //inner walls spawn
                         wallsPerColumn++;
@@ -181,9 +193,9 @@ public class LevelGenerator : MonoBehaviour {
                 #endregion
                 gridSpawner.SpawnRoad(cellData[x, y]); //road spawn
                 #region Enemies spawn
-                int enemyXPos = cellData.GetLength(Values.xDimension) % 2 == 0 ? Values.enemyPosUnE : Values.enemyPosEven;
-                int enemyYPos = cellData.GetLength(Values.yDimension) % 2 == 0 ? Values.enemyPosUnE : Values.enemyPosEven;
-                if (x == cellData.GetLength(Values.xDimension) - enemyXPos && y == cellData.GetLength(Values.yDimension) - enemyYPos)
+                int enemyXPos = cellData.GetLength(xDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
+                int enemyYPos = cellData.GetLength(yDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
+                if (x == cellData.GetLength(xDimension) - enemyXPos && y == cellData.GetLength(yDimension) - enemyYPos)
                 {
                     gridSpawner.SpawnEnemies(cellData[x, y], tempEnemiesNumber); //enemies spawn
                 }
@@ -195,7 +207,7 @@ public class LevelGenerator : MonoBehaviour {
                 }
                 #endregion
                 #region Player spawn
-                if (x == Values.playerPos.x && y == Values.playerPos.y)
+                if (x == playerSpawnPosition.x && y == playerSpawnPosition.y)
                 {
                     gridSpawner.SpawnPlayer(cellData[x, y]); //player spawn
                 }

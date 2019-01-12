@@ -11,7 +11,7 @@ public class GameController: MonoBehaviour
     private float protectionDuration;
     [SerializeField, Range(3.5f, 10f)]
     private float chaseInnacuracy;
-
+    private int levelToStart = 1;
     public static GameController instance;
 
     UIController uiController;
@@ -24,6 +24,9 @@ public class GameController: MonoBehaviour
     int playerLifesLeft;
     bool isRoundWinner;
     float currentChaseInaccuracy;
+    private float chaseInaccuracyReduction = 1;
+
+    [SerializeField, Range(0, 5)] private int enemyDamage;
     Queue<GameObject> enemiesStorage;
     
     private void Awake()
@@ -81,7 +84,7 @@ public class GameController: MonoBehaviour
     {
         ClearLevel();
         RefreshStats();
-        currentLevel = Values.firstLevel;
+        currentLevel = levelToStart;
         currentChaseInaccuracy = chaseInnacuracy; 
         uiController.UpdateLevelText(currentLevel);     
     }
@@ -94,7 +97,7 @@ public class GameController: MonoBehaviour
             OnGameWin();
             return; 
         }
-        currentChaseInaccuracy -= Values.ChaseInaccuracyReduction;
+        currentChaseInaccuracy -= chaseInaccuracyReduction;
         LevelSetter(true);
     }
 
@@ -110,7 +113,7 @@ public class GameController: MonoBehaviour
             return;
         StartCoroutine(ProtectionActivator());
         uiController.PlayerDamaged();
-        playerLifesLeft -= Values.enemyDamage;
+        playerLifesLeft -= enemyDamage;
         uiController.LifesAmountUpdate(playerLifesLeft);
         if (playerLifesLeft < 1)
         {

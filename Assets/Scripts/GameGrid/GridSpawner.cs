@@ -17,6 +17,12 @@ public class GridSpawner : MonoBehaviour {
     [SerializeField]
     private float delayBeforeNewEnemy;
 
+    // Offset of coin spawn at Y-axis
+    private float coinOffset = 0.1f;
+    // Offset of enemy spawn at Y-axis
+    private float enemyOffset = 0.15f;
+    // Offset of player spawn at Y-axis
+    private float playerOffset = 0.2f;
     Transform gridTransform;
 
     public void SetGridTransformr(Transform _gridTransform)
@@ -38,7 +44,7 @@ public class GridSpawner : MonoBehaviour {
 
     public void SpawnCoin(Vector3 spawnPosition)
     {
-        GameObject coin = Instantiate(coinPrefab, spawnPosition + Vector3.up * Values.coinOffset, Quaternion.identity);
+        GameObject coin = Instantiate(coinPrefab, spawnPosition + Vector3.up * coinOffset, Quaternion.identity);
         coin.transform.parent = gridTransform;
         coin.GetComponent<Coin>().OnCoinCollected += GameController.instance.CollectCoin;
         GameController.instance.NewCoinsAmount();
@@ -46,7 +52,7 @@ public class GridSpawner : MonoBehaviour {
 
     public void SpawnPlayer(Vector3 spawnPosition)
     {
-        GameObject player = Instantiate(playerPrefab, spawnPosition + Vector3.up * Values.playerOffset, Quaternion.identity);
+        GameObject player = Instantiate(playerPrefab, spawnPosition + Vector3.up * playerOffset, Quaternion.identity);
         player.transform.parent = gridTransform;
     }
 
@@ -59,7 +65,7 @@ public class GridSpawner : MonoBehaviour {
     {
         for (int i = 0; i < enemiesNumber; i++)
         {
-            GameObject enemy = Instantiate(enemyPrefab, spawnPosition + Vector3.up * Values.enemyOffset, Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, spawnPosition + Vector3.up * enemyOffset, Quaternion.identity);
             enemy.transform.parent = gridTransform;
             enemy.GetComponent<EnemyController>().OnDamageDone += GameController.instance.OnPlayerDamaged;
             yield return new WaitForSeconds(delayBeforeNewEnemy);
