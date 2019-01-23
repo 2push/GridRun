@@ -1,5 +1,5 @@
 # GridRun
-Simple grid-based maze runner  
+Simple grid-based maze runner    
 Bonus-list:
 
 ![alt text](https://raw.githubusercontent.com/2push/GridRun/master/Assets/Sprites/Bonuses/antibonus_enemySpeed.png) - 
