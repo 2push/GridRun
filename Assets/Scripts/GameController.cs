@@ -11,6 +11,7 @@ public class GameController: MonoBehaviour
     private float protectionDuration;
     [SerializeField, Range(3.5f, 10f)]
     private float chaseInnacuracy;
+
     private int levelToStart = 1;
     public static GameController instance;
 
@@ -59,7 +60,7 @@ public class GameController: MonoBehaviour
     {
         get { return currentChaseInaccuracy; }
     }
-
+    
     private void RefreshPlayerLifes()
     {
         playerLifesLeft = playerLifes;
@@ -68,16 +69,15 @@ public class GameController: MonoBehaviour
 
     private void LevelSetter(bool isNext)
     {
-            if (isNext)
-            {
-                ClearLevel();
-                levelGenerator.GenerateLevel(++currentLevel);
-                uiController.UpdateLevelText(currentLevel);
-                RefreshPlayerLifes();
+        ClearLevel();
+        if (isNext)
+        {
+            levelGenerator.GenerateLevel(++currentLevel);
+            uiController.UpdateLevelText(currentLevel);
+            RefreshPlayerLifes();
             return;
-            }
-            ClearLevel();
-            levelGenerator.GenerateLevel(currentLevel);       
+        }
+        levelGenerator.GenerateLevel(currentLevel);       
     }   
 
     private void RestartGame()

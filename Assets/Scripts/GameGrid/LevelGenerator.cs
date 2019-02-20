@@ -52,9 +52,9 @@ public class LevelGenerator : MonoBehaviour {
         gridSpawner.SetGridTransformr(transform);
         thisTransform = transform;
         camController.SetCamSize(gridSize.x, gridSize.y, cellDiameter);
-        Action<Vector3[,]> level1 = SetCells1;
-        Action<Vector3[,]> level2 = SetCells2;
-        Action<Vector3[,]> level3 = SetCells3;
+        Action<Vector3[,]> level1 = SetLevel1;
+        Action<Vector3[,]> level2 = SetLevel2;
+        Action<Vector3[,]> level3 = SetLevel3;
         levelsList = new Dictionary<int, Action<Vector3[,]>>
         {
             { 1, level1 },
@@ -79,7 +79,7 @@ public class LevelGenerator : MonoBehaviour {
         get { return levelsList.Count; }
     }
 
-    private void SetCells1(Vector3[,] cellData)
+    private void SetLevel1(Vector3[,] cellData)
     {
         for (int x = 0; x < cellData.GetLength(xDimension); x++)
         {
@@ -91,9 +91,11 @@ public class LevelGenerator : MonoBehaviour {
                 {
                     gridSpawner.SpawnWall(cellData[x, y]); //side walls spawn
                     continue;
-                } 
+                }
                 #endregion
-                gridSpawner.SpawnRoad(cellData[x,y]); //road spawn
+                #region Road spawn
+                gridSpawner.SpawnRoad(cellData[x,y]);
+                #endregion
                 #region Enemies spawn
                 int enemyXPos = cellData.GetLength(xDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
                 int enemyYPos = cellData.GetLength(yDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
@@ -118,7 +120,7 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
-    private void SetCells2(Vector3[,] cellData)
+    private void SetLevel2(Vector3[,] cellData)
     {
         int tempEnemiesNumber = enemiesNumber + enemiesAddPerWave;
         for (int x = 0; x < cellData.GetLength(xDimension); x++)
@@ -133,9 +135,11 @@ public class LevelGenerator : MonoBehaviour {
                 {
                     gridSpawner.SpawnWall(cellData[x, y]); //walls spawn
                     continue;
-                } 
+                }
                 #endregion
-                gridSpawner.SpawnRoad(cellData[x, y]); //road spawn
+                #region Road spawn
+                gridSpawner.SpawnRoad(cellData[x, y]); 
+                #endregion
                 #region Enemies spawn
                 int enemyXPos = cellData.GetLength(xDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
                 int enemyYPos = cellData.GetLength(yDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
@@ -160,7 +164,7 @@ public class LevelGenerator : MonoBehaviour {
         }
     }
 
-    private void SetCells3(Vector3[,] cellData)
+    private void SetLevel3(Vector3[,] cellData)
     {
 
         int tempEnemiesNumber = enemiesNumber + enemiesAddPerWave * 2;
@@ -189,9 +193,11 @@ public class LevelGenerator : MonoBehaviour {
                         wallsPerColumn++;
                         continue;
                     }
-                } 
+                }
                 #endregion
-                gridSpawner.SpawnRoad(cellData[x, y]); //road spawn
+                #region Road spawn
+                gridSpawner.SpawnRoad(cellData[x, y]);
+                #endregion
                 #region Enemies spawn
                 int enemyXPos = cellData.GetLength(xDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;
                 int enemyYPos = cellData.GetLength(yDimension) % 2 == 0 ? enemyPosIndent : enemyPosIndentEven;

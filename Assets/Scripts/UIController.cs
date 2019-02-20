@@ -6,13 +6,13 @@ using System;
 
 public class UIController : MonoBehaviour {
     [SerializeField]
-    private GameObject winnerScreen;
+    private GameObject winnerUI;
     [SerializeField]
     private GameObject ui;
     [SerializeField]
-    private GameObject damageTaken;
+    private GameObject damageUI;
     [SerializeField]
-    private GameObject roundWin;
+    private GameObject roundWinUI;
     [SerializeField, Range(0.1f, 1f)]
     private float blickSpeed;
     [SerializeField]
@@ -34,8 +34,8 @@ public class UIController : MonoBehaviour {
 
     private void Init()
     {
-        playerDamagedImage = damageTaken.GetComponent<Image>();
-        roundWinImage = roundWin.GetComponent<Image>();
+        playerDamagedImage = damageUI.GetComponent<Image>();
+        roundWinImage = roundWinUI.GetComponent<Image>();
     }
 
     private void Update()
@@ -44,7 +44,7 @@ public class UIController : MonoBehaviour {
         {
             isPaused = false;
             ui.SetActive(true);
-            winnerScreen.SetActive(false);
+            winnerUI.SetActive(false);
             Time.timeScale = 1f;
             unPauseCallback(false);
         }
@@ -54,14 +54,14 @@ public class UIController : MonoBehaviour {
     {
         isPaused = true;
         ui.SetActive(false);
-        winnerScreen.SetActive(true);
+        winnerUI.SetActive(true);
         Time.timeScale = 0f;
         unPauseCallback = methodToUnpause;
     }
 
     public void RoundCompleted()
     {
-        StartCoroutine(ScreenBlick(roundWinImage));
+        StartCoroutine(ScreenBlick(roundWinImage, roundWinUI));
     }
 
     public void UpdateLevelText(int level)
@@ -71,25 +71,26 @@ public class UIController : MonoBehaviour {
 
     public void PlayerDamaged()
     {
-        StartCoroutine(ScreenBlick(playerDamagedImage));
+        StartCoroutine(ScreenBlick(playerDamagedImage, damageUI));
     }
 
-    private IEnumerator ScreenBlick(Image image)
-    {
-        Color tmpColor = image.color;
-
-        while (image.color.a < 1f)
+    private IEnumerator ScreenBlick(Image screenImage, GameObject uiScreen)
+    {      
+        Color tmpColor = screenImage.color;
+        uiScreen.SetActive(true);
+        while (screenImage.color.a < 1f)
         {
             tmpColor.a += blickSpeed;
-            image.color = tmpColor;
+            screenImage.color = tmpColor;
             yield return null;
         }
-        while (image.color.a > 0)
+        while (screenImage.color.a > 0)
         {
             tmpColor.a -= blickSpeed;
-            image.color = tmpColor;
+            screenImage.color = tmpColor;
             yield return null;
         }
+        uiScreen.SetActive(false);
     }
     
     public void AcquiredCoinsUpdate(int collectedCoins)

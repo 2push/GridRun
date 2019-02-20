@@ -8,8 +8,9 @@ public class BonusManager : MonoBehaviour {
     [SerializeField] private float bonusSpawnInterval;
     [SerializeField] private float bonusLifeTime;
     [SerializeField] private int poolSize;
-    [SerializeField, Range(0f, 3f)] private float YSpawnHigh;
+    [SerializeField, Range(0f, 3f)] private float ySpawnHigh;
     [SerializeField] private GameObject particles;
+
     Vector2 spawnArea;
     Vector3 spawnAreaPos;
     Coroutine bonusGeneration;
@@ -50,7 +51,6 @@ public class BonusManager : MonoBehaviour {
         #region Pre-creating particles
         pickUpEffect = Instantiate(particles);
         effectParticles = pickUpEffect.GetComponent<ParticleSystem>();
-        pickUpEffect.SetActive(false);
         #endregion
     }
 
@@ -79,7 +79,6 @@ public class BonusManager : MonoBehaviour {
         bonusStorage.Enqueue(bonus);
         if (!ifSpawnEffect)
             return;
-        pickUpEffect.SetActive(true);
         pickUpEffect.transform.position = bonus.transform.position;
         effectParticles.Play();
     }
@@ -88,7 +87,7 @@ public class BonusManager : MonoBehaviour {
     {
         yield return new WaitForSeconds(bonusLifeTime);
         if (bonusOnLevel.activeSelf)
-        {
+        {           
             ReturnBonusToPool(bonusOnLevel, false);
         }
     }
@@ -101,7 +100,7 @@ public class BonusManager : MonoBehaviour {
             if (bonusStorage.Count > 0)
             {
                 float x = Random.Range(spawnAreaPos.x - spawnArea.x * 0.5f, spawnAreaPos.x + spawnArea.x * 0.5f);
-                float y = spawnAreaPos.y + YSpawnHigh;
+                float y = spawnAreaPos.y + ySpawnHigh;
                 float z = Random.Range(spawnAreaPos.y - spawnArea.y * 0.5f, spawnAreaPos.y + spawnArea.y * 0.5f);
                 Vector3 bonusSpawnPosition = new Vector3(x, y, z);
                 int number = Random.Range(0, bonuses.Count);
@@ -110,7 +109,7 @@ public class BonusManager : MonoBehaviour {
                 bonusesData[bonus].transform.position = bonusSpawnPosition;
                 bonusesData[bonus].script.SetUp(bonuses[number].bonusEffect);
                 bonusesData[bonus].spriteRenderer.sprite = bonuses[number].sprite;
-                if (bonusesLifetime[bonus] != null) //not sure if it can be null, but anyways gonna check
+                if (bonusesLifetime[bonus] != null) 
                     StopCoroutine(bonusesLifetime[bonus]);
                 StartCoroutine(bonusesLifetime[bonus]);
             }           
