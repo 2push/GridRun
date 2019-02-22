@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BonusManager : MonoBehaviour {
+public class BonusManager : MonoBehaviour
+{
 
     [SerializeField] private GameObject bonusPrefab;
     [SerializeField] private float bonusSpawnInterval;
@@ -18,7 +19,6 @@ public class BonusManager : MonoBehaviour {
 
     Queue<GameObject> bonusStorage; 
     Dictionary<GameObject, BonusPrefabData> bonusesData; 
-    Dictionary<GameObject, IEnumerator> bonusesLifetime;
 
     GameObject pickUpEffect;
     ParticleSystem effectParticles;
@@ -33,7 +33,6 @@ public class BonusManager : MonoBehaviour {
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
-        bonusesLifetime = new Dictionary<GameObject, IEnumerator>();
         #region Pre-creating bonus pool
         for (int i = 0; i < poolSize; i++)
         {           
@@ -43,7 +42,6 @@ public class BonusManager : MonoBehaviour {
             SpriteRenderer renderer = prefab.GetComponent<SpriteRenderer>();
             BonusPrefabData prefabData = new BonusPrefabData(script, prefab.transform, renderer);
             bonusesData.Add(prefab, prefabData);
-            bonusesLifetime.Add(prefab, BonusOnLevelLifetime(prefab));
             prefab.SetActive(false);
             bonusStorage.Enqueue(prefab);
         }
@@ -77,21 +75,12 @@ public class BonusManager : MonoBehaviour {
     {
         bonus.SetActive(false);
         bonusStorage.Enqueue(bonus);
-        if (!ifSpawnEffect)
-            return;
-        pickUpEffect.transform.position = bonus.transform.position;
-        effectParticles.Play();
-    }
-
-    private IEnumerator BonusOnLevelLifetime(GameObject bonusOnLevel)
-    {
-        yield return new WaitForSeconds(bonusLifeTime);
-        if (bonusOnLevel.activeSelf)
-        {           
-            ReturnBonusToPool(bonusOnLevel, false);
+        if (ifSpawnEffect)
+        {        
+            pickUpEffect.transform.position = bonus.transform.position;
+            effectParticles.Play();
         }
     }
-
     private IEnumerator BonusGeneration()
     {
         while (true)
@@ -103,15 +92,12 @@ public class BonusManager : MonoBehaviour {
                 float y = spawnAreaPos.y + ySpawnHigh;
                 float z = Random.Range(spawnAreaPos.y - spawnArea.y * 0.5f, spawnAreaPos.y + spawnArea.y * 0.5f);
                 Vector3 bonusSpawnPosition = new Vector3(x, y, z);
-                int number = Random.Range(0, bonuses.Count);
+                int bonusNumber = Random.Range(0, bonuses.Count);
                 GameObject bonus = bonusStorage.Dequeue();
                 bonus.SetActive(true);
                 bonusesData[bonus].transform.position = bonusSpawnPosition;
-                bonusesData[bonus].script.SetUp(bonuses[number].bonusEffect);
-                bonusesData[bonus].spriteRenderer.sprite = bonuses[number].sprite;
-                if (bonusesLifetime[bonus] != null) 
-                    StopCoroutine(bonusesLifetime[bonus]);
-                StartCoroutine(bonusesLifetime[bonus]);
+                bonusesData[bonus].script.SetUp(bonuses[bonusNumber].bonusEffect);
+                bonusesData[bonus].spriteRenderer.sprite = bonuses[bonusNumber].sprite;             
             }           
         }
     }

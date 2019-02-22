@@ -25,7 +25,7 @@ public class GameController: MonoBehaviour
     int playerLifesLeft;
     bool isRoundWinner;
     float currentChaseInaccuracy;
-    private float chaseInaccuracyReduction = 1;
+    float chaseInaccuracyReduction = 1;
 
     [SerializeField, Range(0, 5)] private int enemyDamage;
     Queue<GameObject> enemiesStorage;

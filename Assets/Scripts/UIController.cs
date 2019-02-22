@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class UIController : MonoBehaviour {
+public class UIController : MonoBehaviour
+{
     [SerializeField]
     private GameObject winnerUI;
     [SerializeField]

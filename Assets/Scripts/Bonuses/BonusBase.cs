@@ -5,7 +5,8 @@ using UnityEngine.Events;
 using System;
 
 [Serializable]
-public class BonusBase : MonoBehaviour {
+public class BonusBase : MonoBehaviour
+{
     [Tooltip("Set bonus' duration")]
     [SerializeField] private float duration;
     [Tooltip("Set bonus sprite")]

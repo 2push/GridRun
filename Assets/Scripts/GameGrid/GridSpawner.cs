@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GridSpawner : MonoBehaviour {
+public class GridSpawner : MonoBehaviour
+{
    
     [SerializeField]
     private GameObject roadPrefab;

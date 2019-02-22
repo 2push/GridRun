@@ -4,7 +4,8 @@ using System;
 using UnityEngine;
 using System.Linq;
 
-public class LevelGenerator : MonoBehaviour {
+public class LevelGenerator : MonoBehaviour
+{
 
     [SerializeField, Range(1,5)]
     private int enemiesNumber;
