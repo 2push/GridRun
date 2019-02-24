@@ -19,7 +19,7 @@ public class BonusManager : MonoBehaviour
 
     Queue<GameObject> bonusStorage; 
     Dictionary<GameObject, BonusPrefabData> bonusesData; 
-
+    Dictionary<GameObject, Coroutine> bonusesLife;
     GameObject pickUpEffect;
     ParticleSystem effectParticles;
 
@@ -33,6 +33,7 @@ public class BonusManager : MonoBehaviour
         bonuses = GetComponent<BonusBase>().GetBonuses();
         bonusStorage = new Queue<GameObject>();
         bonusesData = new Dictionary<GameObject, BonusPrefabData>();
+        bonusesLife = new Dictionary<GameObject, Coroutine>();
         #region Pre-creating bonus pool
         for (int i = 0; i < poolSize; i++)
         {           
@@ -71,16 +72,23 @@ public class BonusManager : MonoBehaviour
         }
     }
 
-    public void ReturnBonusToPool(GameObject bonus, bool ifSpawnEffect)
+    public void ReturnBonusToPool(GameObject bonus, bool isTaken)
     {
         bonus.SetActive(false);
         bonusStorage.Enqueue(bonus);
-        if (ifSpawnEffect)
+        if (isTaken)
         {        
             pickUpEffect.transform.position = bonus.transform.position;
             effectParticles.Play();
         }
     }
+
+    private IEnumerator BonusLifeTimer(GameObject bonus)
+    {
+        yield return new WaitForSeconds(bonusLifeTime);
+        ReturnBonusToPool(bonus, false);
+    }
+
     private IEnumerator BonusGeneration()
     {
         while (true)
@@ -97,7 +105,10 @@ public class BonusManager : MonoBehaviour
                 bonus.SetActive(true);
                 bonusesData[bonus].transform.position = bonusSpawnPosition;
                 bonusesData[bonus].script.SetUp(bonuses[bonusNumber].bonusEffect);
-                bonusesData[bonus].spriteRenderer.sprite = bonuses[bonusNumber].sprite;             
+                bonusesData[bonus].spriteRenderer.sprite = bonuses[bonusNumber].sprite;
+                if (bonusesLife.ContainsKey(bonus))
+                    StopCoroutine(bonusesLife[bonus]);
+                bonusesLife[bonus] = StartCoroutine(BonusLifeTimer(bonus));
             }           
         }
     }
